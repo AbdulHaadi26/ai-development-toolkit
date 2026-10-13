@@ -79,19 +79,36 @@ export function runWorkflowKit(command, options = {}) {
       "--get",
       "submodule.workflow-kit.branch",
     ]);
-    const activeBranch = runGit([
+    if (!targetBranch) {
+      throw new Error("configured submodule branch is missing");
+    }
+  } catch {
+    return reportError(
+      "the workflow-kit branch is missing from .gitmodules. Configure the branch (normally `main`) before checking or updating.",
+      writeError,
+    );
+  }
+
+  let activeBranch;
+  try {
+    activeBranch = runGit([
       "-C",
       repositoryRoot,
       "config",
       "--get",
       "submodule.workflow-kit.branch",
     ]);
-    if (!targetBranch || targetBranch !== activeBranch) {
-      throw new Error("configured submodule branch is missing or inconsistent");
+  } catch (error) {
+    if (error.status !== 1) {
+      return reportError(
+        "could not read the local workflow-kit branch setting.",
+        writeError,
+      );
     }
-  } catch {
+  }
+  if (activeBranch && activeBranch !== targetBranch) {
     return reportError(
-      "the workflow-kit branch is missing or differs between .gitmodules and local Git config. Initialize the submodule and configure the intended branch before checking or updating.",
+      "the local workflow-kit branch override differs from .gitmodules. Align the branch settings before checking or updating.",
       writeError,
     );
   }
@@ -105,7 +122,7 @@ export function runWorkflowKit(command, options = {}) {
   } catch (error) {
     const details = error.stderr?.toString().trim();
     return reportError(
-      `could not read the toolkit pointer or fetch origin/main. Check GitHub access and remote configuration.${details ? ` ${details}` : ""}`,
+      `could not read the toolkit pointer or fetch origin/${targetBranch}. Check GitHub access and remote configuration.${details ? ` ${details}` : ""}`,
       writeError,
     );
   }
@@ -148,7 +165,7 @@ export function runWorkflowKit(command, options = {}) {
     `Workflow toolkit pointer: ${currentVersion} (${currentSha.slice(0, 12)})`,
   );
   write(
-    `Latest toolkit main:      ${latestVersion} (${latestSha.slice(0, 12)})`,
+    `Latest toolkit ${targetBranch}:      ${latestVersion} (${latestSha.slice(0, 12)})`,
   );
 
   if (pointerState === "current") {
@@ -170,8 +187,20 @@ export function runWorkflowKit(command, options = {}) {
     return 1;
   }
 
-  write("Updating the workflow-kit submodule pointer from origin/main...");
+  write(
+    `Updating the workflow-kit submodule pointer from origin/${targetBranch}...`,
+  );
   try {
+    runGit(
+      [
+        "-C",
+        repositoryRoot,
+        "config",
+        "submodule.workflow-kit.branch",
+        targetBranch,
+      ],
+      repositoryRoot,
+    );
     runGit(
       ["submodule", "update", "--init", "--remote", "--merge", "workflow-kit"],
       repositoryRoot,

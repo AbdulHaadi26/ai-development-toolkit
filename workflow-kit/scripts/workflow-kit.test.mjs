@@ -11,7 +11,10 @@ const toolkitRoot = `${root}/workflow-kit`;
 const currentSha = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const latestSha = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 
-function createHarness(state, { fetchFails = false } = {}) {
+function createHarness(
+  state,
+  { fetchFails = false, branchMismatch = false } = {},
+) {
   const calls = [];
   const output = [];
   const errors = [];
@@ -23,8 +26,13 @@ function createHarness(state, { fetchFails = false } = {}) {
     if (
       args.includes("--get") &&
       args.at(-1) === "submodule.workflow-kit.branch"
-    )
-      return "main";
+    ) {
+      if (args.includes("-f")) return "main";
+      if (branchMismatch) return "release";
+      const error = new Error("branch not configured locally");
+      error.status = 1;
+      throw error;
+    }
     if (args.includes("fetch")) {
       if (fetchFails) throw new Error("network unavailable");
       return "";
@@ -49,6 +57,7 @@ function createHarness(state, { fetchFails = false } = {}) {
       throw error;
     }
     if (args.includes("show")) return "1.1.0";
+    if (args.includes("submodule.workflow-kit.branch")) return "";
     if (args[0] === "submodule" && args[1] === "update") {
       pointer = latestSha;
       return "";
@@ -83,7 +92,7 @@ test("check reports a current pointer without updating it", () => {
   );
 });
 
-test("check fetches the branch configured in both repository configs", () => {
+test("check fetches the branch from .gitmodules when local config is unset", () => {
   const harness = createHarness("behind");
   runWorkflowKit("check", harness.options);
 
@@ -132,7 +141,7 @@ test("check identifies a diverged pointer without updating it", () => {
   );
 });
 
-test("update advances only a pointer behind main", () => {
+test("update advances only a pointer behind main and initializes local branch config", () => {
   const harness = createHarness("behind");
   const result = runWorkflowKit("update", harness.options);
 
@@ -140,6 +149,14 @@ test("update advances only a pointer behind main", () => {
   assert.equal(
     harness.calls.filter((args) => args[0] === "submodule").length,
     1,
+  );
+  assert.ok(
+    harness.calls.some(
+      (args) =>
+        args.includes("config") &&
+        args.includes("submodule.workflow-kit.branch") &&
+        args.at(-1) === "main",
+    ),
   );
   assert.ok(
     harness.output.some((line) => line.includes(latestSha.slice(0, 12))),
@@ -153,6 +170,40 @@ test("update does not merge an ahead pointer", () => {
   assert.equal(result, 1);
   assert.equal(
     harness.calls.some((args) => args[0] === "submodule"),
+    false,
+  );
+});
+
+test("update does not merge a diverged pointer", () => {
+  const harness = createHarness("diverged");
+  const result = runWorkflowKit("update", harness.options);
+
+  assert.equal(result, 1);
+  assert.equal(
+    harness.calls.some((args) => args[0] === "submodule"),
+    false,
+  );
+});
+
+test("update is a no-op for a current pointer", () => {
+  const harness = createHarness("current");
+  const result = runWorkflowKit("update", harness.options);
+
+  assert.equal(result, 0);
+  assert.equal(
+    harness.calls.some((args) => args[0] === "submodule"),
+    false,
+  );
+});
+
+test("check rejects a conflicting local branch override", () => {
+  const harness = createHarness("current", { branchMismatch: true });
+  const result = runWorkflowKit("check", harness.options);
+
+  assert.equal(result, 1);
+  assert.ok(harness.errors[0].includes("override differs"));
+  assert.equal(
+    harness.calls.some((args) => args.includes("fetch")),
     false,
   );
 });
