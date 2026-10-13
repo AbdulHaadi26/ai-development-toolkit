@@ -1,0 +1,8 @@
+---
+description: Shared project scope, coding, and review workflow
+alwaysApply: true
+---
+
+@AGENTS.md
+
+Before editing, read `work-flow/DEVELOPMENT-WORKFLOW.md`, `work-flow/AGENT-ROLES.md`, and the selected story. Follow shared scope, statuses, tests, and user review gates.
