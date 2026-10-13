@@ -8,6 +8,8 @@ This repository maintains a reusable, versioned workflow kit for teams using hum
 - Follow the [adoption guide](workflow-kit/ADOPTION.md) to install or update the kit in another repository.
 - Check [`workflow-kit/VERSION`](workflow-kit/VERSION) to see the current version.
 
+At the start of each task in an adopting repository, run `npm run workflow:check` (or `node workflow-kit/scripts/workflow-kit.mjs check`) to compare the pinned submodule commit with toolkit `main`. If it reports an outdated pointer, tell the user and continue against the pinned version until they choose to update it. To update, use `npm run workflow:update` (or `node workflow-kit/scripts/workflow-kit.mjs update`); inspect the resulting Git submodule pointer change, selectively merge relevant templates into the project's tailored files, update its version record, and commit through the normal feature branch and PR. The check fetches toolkit `main` but does not change the worktree or pointer. The update advances only the submodule pointer and does not overwrite project files. See the [setup and update process](workflow-kit/ADOPTION.md#track-and-update-the-toolkit-as-a-git-submodule).
+
 The kit provides templates for story and bug workflows, review roles, coding standards, change tracking, repository instructions, pull-request checklists, and AI-tool adapters. Customize the templates for the target repository; keep that repository's own product requirements and history there.
 
 ## Maintain the toolkit

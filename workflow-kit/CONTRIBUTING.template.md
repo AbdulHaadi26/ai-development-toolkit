@@ -1,6 +1,6 @@
 # [PROJECT_NAME] — Contributor Guide
 
-Read the root `README.md`, `AGENTS.md`, `work-flow/DEVELOPMENT-WORKFLOW.md`, and `work-flow/AGENT-ROLES.md` before work. Create one `feature/US-NNN-short-name` branch per feature/story and one `bug/BUG-YYYYMMDD-NNN-short-name` branch per bug, based on the latest `main`. Open a pull request targeting `main` for every feature or bug. Never commit or push directly to `main`; merge only after checks, separate post-implementation Designer, Developer, and QA reviews, and user acceptance. Create a `DEBUG-LOG.md` entry before implementation edits. After each task, run the full current checks, record evidence, complete role reviews, and stop for user review.
+Read the root `README.md`, `AGENTS.md`, `work-flow/DEVELOPMENT-WORKFLOW.md`, and `work-flow/AGENT-ROLES.md` before work. Create one `feature/US-NNN-short-name` branch per feature/story and one `bug/BUG-YYYYMMDD-NNN-short-name` branch per bug, based on the latest `main`. Open a pull request targeting `main` for every feature or bug. Never commit or push directly to `main`; merge only after checks, separate post-implementation Designer, Developer, and QA reviews of the same PR head, Manager review, and user acceptance. Every specialist completes their assessment even if an earlier review found a blocker; blockers still prevent approval and merge. Create a `DEBUG-LOG.md` entry before implementation edits. After each task, run the full current checks, record evidence, complete role reviews, and stop for user review.
 
 ## Prompt: project status
 
@@ -14,11 +14,11 @@ Flag inconsistencies. Do not edit files or claim work.
 
 ```text
 Pick [US-NNN] and task [ID] after the Manager confirms scope, priority, ownership, and
-dependencies. Follow work-flow/AGENT-ROLES.md in order: design review, technical review and
-pre-implementation test-plan review, implementation, post-implementation Designer, Developer,
-and QA reviews, Manager review, then user review. Record
-the change in work-flow/DEBUG-LOG.md before implementation edits. Do not advance through a
-pending or rejected gate.
+dependencies. Follow work-flow/AGENT-ROLES.md: pre-implementation design, technical, and test-plan
+reviews, implementation, complete post-implementation Designer/Developer/QA reviews of the same
+PR head, Manager review, then user review. Complete each specialist's assessment even if another
+role found a blocker; do not approve or merge until all blockers are resolved. Record the change
+in work-flow/DEBUG-LOG.md before implementation edits.
 ```
 
 ## Prompt: propose a feature
