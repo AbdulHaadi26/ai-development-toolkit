@@ -5,6 +5,10 @@ Use these prompts from top to bottom as needed. Read the shared project files be
 ### 1. Explain the project process
 
 ```text
+At the start of this task, run `npm run workflow:check` from the app directory. If the toolkit
+pointer is behind, ahead, or diverged, tell the user; update it only when the user asks. Use the
+repository's feature branch and PR process for pointer changes.
+
 Before starting work, read the root README.md, AGENTS.md, work-flow/README.md,
 work-flow/DEVELOPMENT-WORKFLOW.md, and work-flow/AGENT-ROLES.md. Explain repository structure,
 source-of-truth files, roles, status lifecycle, dependency rules, quality checks, and ordered

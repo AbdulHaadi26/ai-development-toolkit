@@ -46,7 +46,7 @@ At the start of every task, check whether the adopted commit is behind toolkit `
 node workflow-kit/scripts/workflow-kit.mjs check
 ```
 
-The check fetches `origin/main` and compares its commit SHA and version with the checked-out submodule. If it reports that the pointer is outdated, tell the user; do not silently advance it. Repositories with a `package.json` should expose this as `npm run workflow:check`.
+The check reads the intended branch from `.gitmodules`, verifies the initialized submodule's local branch setting matches it, and compares the pinned commit SHA and version with that remote branch. The setup above configures `main`. A behind pointer is reported for the user; an ahead or diverged pointer is reported without offering an automatic update. Repositories with a `package.json` should expose this as `npm run workflow:check`.
 
 When the user chooses to update, run:
 
@@ -54,7 +54,7 @@ When the user chooses to update, run:
 node workflow-kit/scripts/workflow-kit.mjs update
 ```
 
-This invokes `git submodule update --init --remote --merge workflow-kit`. Repositories with a `package.json` should expose this as `npm run workflow:update`:
+This invokes `git submodule update --init --remote --merge workflow-kit` only when the pin is behind the configured branch. Repositories with a `package.json` should expose this as `npm run workflow:update`:
 
 ```json
 {
@@ -65,7 +65,7 @@ This invokes `git submodule update --init --remote --merge workflow-kit`. Reposi
 }
 ```
 
-The update command advances the submodule checkout to the latest commit on its configured `main` branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a feature branch and PR. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
+The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a feature branch and PR. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
 
 ## Updating multiple repositories
 

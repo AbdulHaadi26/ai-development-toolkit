@@ -18,3 +18,5 @@ jobs:
           node-version: 22
       - name: Check formatting
         run: npx --yes prettier@3.6.2 --check .
+      - name: Test workflow toolkit commands
+        run: node workflow-kit/scripts/workflow-kit.test.mjs
