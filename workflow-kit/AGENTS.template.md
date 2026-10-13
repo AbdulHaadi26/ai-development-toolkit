@@ -1,5 +1,6 @@
 # Shared project instructions
 
+- At the start of each task, check the adopted `workflow-kit/` pointer against its configured branch (normally toolkit `main`) using `node workflow-kit/scripts/workflow-kit.mjs check` (or `npm run workflow:check`). If it is outdated, inform the user and do not silently update it. Update only when asked, through a feature branch and PR.
 - Read `work-flow/DEVELOPMENT-WORKFLOW.md`, `work-flow/AGENT-ROLES.md`, and the selected story before editing.
 - The story board and story file are the scope/status source of truth. Do not implement unpicked future scope.
 - Create/update `work-flow/DEBUG-LOG.md` before implementation edits. For bugs, also update `work-flow/BUG-LOG.md`.

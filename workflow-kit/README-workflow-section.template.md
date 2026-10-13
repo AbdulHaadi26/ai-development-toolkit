@@ -5,6 +5,10 @@ Use these prompts from top to bottom as needed. Read the shared project files be
 ### 1. Explain the project process
 
 ```text
+At the start of this task, run `npm run workflow:check` from the app directory. If the toolkit
+pointer is behind, ahead, or diverged, tell the user; update it only when the user asks. Use the
+repository's feature branch and PR process for pointer changes.
+
 Before starting work, read the root README.md, AGENTS.md, work-flow/README.md,
 work-flow/DEVELOPMENT-WORKFLOW.md, and work-flow/AGENT-ROLES.md. Explain repository structure,
 source-of-truth files, roles, status lifecycle, dependency rules, quality checks, and ordered
@@ -62,8 +66,9 @@ material scope growth into a linked story.
 ```text
 List bugs by status/severity from work-flow/BUG-LOG.md. For [bug report], create a stable bug
 record and linked DEBUG-LOG entry, reproduce it, create bug/BUG-YYYYMMDD-NNN-short-name from
-the latest main, add a failing regression test, fix the cause, run full checks, complete the
-ordered reviews, open a PR targeting main, and stop for user verification before Done. Never
+the latest main, add a failing regression test, fix the cause, run full checks, complete all
+specialist reviews on the same PR head even if a blocker is found, obtain Manager review, open a
+PR targeting main, and stop for user verification before Done. Never
 commit or push directly to main.
 ```
 
@@ -72,12 +77,14 @@ commit or push directly to main.
 ```text
 Review [US-NNN or BUG-ID] at the current PR head against its acceptance criteria,
 design/coding standards, tests, dependencies, and DEBUG-LOG entry. Treat review as read-only;
-do not edit or push to the author's branch. Run applicable full checks and report exact
-commands/results. Report findings on the PR. Request changes and do not approve while a
-blocking finding remains; formally approve a clean review. Optional suggestions can be
-non-blocking. Always add a summary comment with the reviewed commit, decision, findings or an
-explicit no-findings result, and exact check results/limitations. Do not mark Done or merge
-based only on the comment; wait for the required approvals and user acceptance.
+do not edit or push to the author's branch. Have Designer, Developer, and QA each complete an
+independent review of the same exact PR head, even when an earlier role found a blocker. Run
+applicable full checks and report exact commands/results. Report findings on the PR, then have
+the Manager consolidate the decision. Request changes and do not approve while a blocker
+remains; formally approve only when all applicable gates are clean. Optional suggestions can
+be non-blocking. Always add a summary comment with the reviewed commit, each role's decision,
+findings or an explicit no-findings result, and exact check results/limitations. Do not mark
+Done or merge based only on the comment; wait for user acceptance.
 ```
 
 ### 9. Resolve PR conflicts

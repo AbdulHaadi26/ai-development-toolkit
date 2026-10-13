@@ -29,6 +29,44 @@ The `workflow-kit/` directory is the canonical product-neutral source. It contai
 4. Set `work-flow/WORKFLOW-KIT-VERSION` to the value in this source's `VERSION`. If the target uses another version, document the merged changes and the adopted version there.
 5. Run the target repository's formatting, lint, typecheck, test, build, and security checks. Review the complete diff with the target repository's required roles and merge through its normal PR process.
 
+### Track and update the toolkit as a Git submodule
+
+Add the toolkit once at the repository root:
+
+```sh
+git submodule add -b main https://github.com/AbdulHaadi26/ai-development-toolkit.git workflow-kit
+git submodule update --init --recursive
+```
+
+Commit `.gitmodules` and the `workflow-kit` submodule pointer in the adopting repository's feature branch and PR. On subsequent clones, use `git clone --recurse-submodules` or run `git submodule update --init --recursive` from the repository root.
+
+At the start of every task, check whether the adopted commit is behind toolkit `main`:
+
+```sh
+node workflow-kit/scripts/workflow-kit.mjs check
+```
+
+The check reads the intended branch from `.gitmodules` and compares the pinned commit SHA and version with that remote branch. A missing local branch setting is allowed; an explicit local override that conflicts with `.gitmodules` is rejected. The setup above configures `main`. A behind pointer is reported for the user; an ahead or diverged pointer is reported without offering an automatic update. Repositories with a `package.json` should expose this as `npm run workflow:check`.
+
+When the user chooses to update, run:
+
+```sh
+node workflow-kit/scripts/workflow-kit.mjs update
+```
+
+This sets the local submodule branch to the `.gitmodules` value, then invokes `git submodule update --init --remote --merge workflow-kit` only when the pin is behind the configured branch. Repositories with a `package.json` should expose this as `npm run workflow:update`:
+
+```json
+{
+  "scripts": {
+    "workflow:check": "node workflow-kit/scripts/workflow-kit.mjs check",
+    "workflow:update": "node workflow-kit/scripts/workflow-kit.mjs update"
+  }
+}
+```
+
+The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a feature branch and PR. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
+
 ## Updating multiple repositories
 
-Make a portable process improvement once in this source folder, review it here, and increment `VERSION` according to the change: patch for corrections, minor for backward-compatible workflow additions, major for incompatible changes. Then open a separate PR in each adopting repository to merge the relevant template changes into its project-specific workflow. Keep a consumer's installed version and any deliberate local adaptation visible; do not silently replace custom rules.
+Make a portable process improvement once in this source folder, review it here, and increment `VERSION` according to the change: patch for corrections, minor for backward-compatible workflow additions, major for incompatible changes. After release, each adopting repository runs the submodule update command, reviews the pointer and template changes, selectively updates its local adaptations, and opens its own PR. Keep a consumer's installed version and any deliberate local adaptation visible; do not silently replace custom rules.
