@@ -38,7 +38,7 @@ git submodule add -b main https://github.com/AbdulHaadi26/ai-development-toolkit
 git submodule update --init --recursive
 ```
 
-Commit `.gitmodules` and the `workflow-kit` submodule pointer in the adopting repository's feature branch and PR. On subsequent clones, use `git clone --recurse-submodules` or run `git submodule update --init --recursive` from the repository root.
+Commit `.gitmodules` and the `workflow-kit` submodule pointer in the adopting repository's short-lived branch and PR, following its trunk-based workflow. On subsequent clones, use `git clone --recurse-submodules` or run `git submodule update --init --recursive` from the repository root.
 
 At the start of every task, check whether the adopted commit is behind toolkit `main`:
 
@@ -65,7 +65,7 @@ This sets the local submodule branch to the `.gitmodules` value, then invokes `g
 }
 ```
 
-The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a feature branch and PR. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
+The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a short-lived task branch and PR. Merge promptly after required gates pass so the adoption branch stays aligned with the trunk; never push the pointer directly to `main`. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
 
 ## Updating multiple repositories
 
