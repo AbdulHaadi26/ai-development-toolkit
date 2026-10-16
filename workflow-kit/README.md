@@ -2,6 +2,8 @@
 
 This folder is the canonical, product-neutral source for reusable workflow templates and AI-tool adapters. The current version is recorded in [`VERSION`](VERSION). Each adopting repository keeps its own application logic, product requirements, and project-specific workflow documents outside this kit.
 
+The development workflow template establishes trunk-based development: `main` is the only long-lived integration branch, and each independently deliverable task uses a short-lived branch and reviewed PR.
+
 To adopt the kit in another repository, follow [`ADOPTION.md`](ADOPTION.md). These are starter templates: adapt them to the target product before use, and track the adopted kit version in that repository.
 
 Adopting repositories can track this folder as a `workflow-kit/` Git submodule. At the start of each task, run `node workflow-kit/scripts/workflow-kit.mjs check` (or `npm run workflow:check`) to compare the pinned commit with its configured branch (normally toolkit `main`); report a behind pointer and do not silently update it. Ahead or diverged pointers are reported and never merged automatically. Run `node workflow-kit/scripts/workflow-kit.mjs update` (or `npm run workflow:update`) to advance a behind pointer. Review that pointer change and selectively merge relevant templates into the project's tailored files through its normal feature branch and PR; never overwrite product decisions or history. See [`ADOPTION.md`](ADOPTION.md) for setup and update steps.

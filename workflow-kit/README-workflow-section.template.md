@@ -2,6 +2,8 @@
 
 Use these prompts from top to bottom as needed. Read the shared project files before implementation. Replace bracketed details with repository-specific values.
 
+The repository follows trunk-based development: `main` is the only long-lived integration branch. Make each implementation task a small, short-lived branch from the latest `main`, aiming to merge it within one working day. Open a PR for that task, and merge only after the required checks, role reviews, and user acceptance pass. Never commit or push directly to `main`. For a multi-task story, merge one task before creating a fresh branch for the next task.
+
 ### 1. Explain the project process
 
 ```text
@@ -44,9 +46,10 @@ implement while any required gate is pending or rejected.
 
 ```text
 List tasks for [US-NNN] with status, dependencies, deliverables, and review gates. After I
-select one, confirm prerequisites and ownership, create feature/US-NNN-short-name from the
-latest main and open a PR targeting main. Never commit or push directly to main. Create a
-DEBUG-LOG entry, then implement only that task. After development, obtain separate Designer,
+select one, confirm prerequisites and ownership, create a short-lived branch from the latest
+main for that task (feature/US-NNN-TNN-short-name; use feature/US-NNN-short-name when the story has one task) and open a PR targeting main. Never commit or
+push directly to main. Do not keep one branch open across multiple tasks. Create a DEBUG-LOG
+entry, then implement only that task. After development, obtain separate Designer,
 Developer, and QA reviews of the completed feature, then stop for user review before the next
 task.
 ```
@@ -56,9 +59,10 @@ task.
 ```text
 Define [feature/change] as a story or update [US-NNN]. Check duplicates, scope, dependencies,
 acceptance criteria, design/data/security implications, and tests. Add new stories as Available
-for Manager review; do not implement until picked. When picked, create feature/US-NNN-short-name
-from the latest main and open a PR targeting main; never commit or push directly to main. Split
-material scope growth into a linked story.
+for Manager review; do not implement until picked. When picked, make each independently
+deliverable task a short-lived feature/US-NNN-TNN-short-name branch from the latest main (use feature/US-NNN-short-name when the story has one task) and open
+a PR targeting main; never commit or push directly to main. Merge an accepted task before
+creating the next task branch. Split material scope growth into a linked story.
 ```
 
 ### 7. List and fix bugs

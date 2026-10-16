@@ -2,7 +2,7 @@
 
 - Story or bug ID:
 - Scope:
-- Branch: `feature/US-NNN-short-name` or `bug/BUG-YYYYMMDD-NNN-short-name`
+- Branch: `feature/US-NNN-TNN-short-name` for one task, `feature/US-NNN-short-name` for a single-task story, or `bug/BUG-YYYYMMDD-NNN-short-name`
 
 ## Verification
 
@@ -18,6 +18,7 @@
 ## Merge gate
 
 - [ ] This pull request targets `main`
+- [ ] This is a short-lived branch based on the latest `main` with one independently deliverable task; `main` remains buildable and releasable
 - [ ] Required CI checks passed
 - [ ] Reviews and user acceptance are complete
 - [ ] Acceptance criteria, dependencies, and scope are verified
