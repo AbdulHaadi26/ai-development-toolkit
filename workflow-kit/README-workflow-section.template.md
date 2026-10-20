@@ -89,7 +89,7 @@ until findings are resolved and the user accepts the feature.
 Resolve conflicts for [PR URL] on its existing feature/bug branch. Inspect current main, PR
 head, and both sides. Preserve both intended changes; never choose ours/theirs wholesale. Check
 scope, dependencies, design/coding standards, shared logic, tests, and change-log IDs; ask the
-owner if unclear. Run diff checks, formatting, lint, typecheck, applicable full tests, build,
-and relevant accessibility/security/SEO checks. Push only to the PR branch, review its complete
-diff at the new head, and post exact evidence on the PR.
+owner if unclear. Run diff checks and the affected local checks, then record the updated head
+and verification evidence in the story and PR. Do not repeat role reviews after conflict
+resolution.
 ```
