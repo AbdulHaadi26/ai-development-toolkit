@@ -23,13 +23,11 @@ Record every independently reviewable story task or bug fix. This complements Gi
 - **After:** intended and delivered behavior/state
 - **Dependencies:** completed, accepted, or blocking dependencies
 - **Verification:** exact commands and results
-- **Manager review:** Pending — reviewer, date, decision, notes
-- **Lead Designer review:** Pending / N/A — reviewer, date, decision, notes
-- **Lead Developer review:** Pending — reviewer, date, decision, notes
-- **Lead QA review:** Pending — reviewer, date, decision, evidence
+- **Story review record:** link to the story's one-time Manager and Lead Designer review record
+- **Completed-feature review record:** link to the story's one-time Lead Developer, Lead Designer, and Lead QA reviews and finding dispositions
 - **Rollback/recovery:** revert commit/PR and any data/configuration steps
 - **Commit/PR:** pending
 - **Notes:** risks or safe evidence links
 ```
 
-Create the entry before implementation edits; update it at each handoff and at review. Use a unique stable change ID and never reuse it.
+Create the entry before implementation edits; update it at handoff and link the story-level review record. Reviews occur once at each defined milestone; do not request repeat reviews after revisions. Use a unique stable change ID and never reuse it.

@@ -2,7 +2,7 @@
 
 This folder is the canonical, product-neutral source for reusable workflow templates and AI-tool adapters. The current version is recorded in [`VERSION`](VERSION). Each adopting repository keeps its own application logic, product requirements, and project-specific workflow documents outside this kit.
 
-The development workflow template establishes trunk-based development: `main` is the only long-lived integration branch, and each independently deliverable task uses a short-lived branch and reviewed PR.
+The development workflow template establishes trunk-based development with one short-lived branch and PR per story/feature. The Manager and Lead Designer review a story once before implementation; Lead Developer, Lead Designer, and Lead QA each review the completed feature once, in parallel. Checks run locally, and GitHub Actions workflows are not used.
 
 To adopt the kit in another repository, follow [`ADOPTION.md`](ADOPTION.md). These are starter templates: adapt them to the target product before use, and track the adopted kit version in that repository.
 
@@ -24,7 +24,7 @@ Contents:
 - `VERSION` — current portable kit version for adopting repositories to record.
 - `scripts/workflow-kit.mjs` — portable check/update commands for the adopted Git submodule pointer.
 - `ADOPTION.md` — portable/product-specific boundary, installation mapping, and multi-repository update process.
-- `AGENT-ROLES.template.md` — sequential Manager, Designer, Developer, and QA reviews.
+- `AGENT-ROLES.template.md` — one-time story and completed-feature reviews by Manager, Designer, Developer, and QA.
 - `DEVELOPMENT-WORKFLOW.template.md` — portable feature/bug lifecycle.
 - `DEBUG-LOG.template.md` and `BUG-LOG.template.md` — traceability ledgers.
 - `FUTURE-SCOPES.template.md` and `user-story.template.md` — status board and story starter.

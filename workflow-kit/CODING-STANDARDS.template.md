@@ -1,6 +1,6 @@
 # [PROJECT_NAME] — Coding Standards
 
-Adapt this baseline to the target repository's actual language, framework, formatter, data sources, and scripts. The checked-in project-specific standards and CI are authoritative after adaptation.
+Adapt this baseline to the target repository's actual language, framework, formatter, data sources, and scripts. The checked-in project-specific standards are authoritative after adaptation.
 
 ## Fixed values and strings
 
@@ -17,8 +17,8 @@ Adapt this baseline to the target repository's actual language, framework, forma
 ## Formatting
 
 - Use one repository formatter and shared configuration for every supported file type, including source, styles, tests, JSON, and Markdown.
-- Format every changed file before review. Ensure local staged-file hooks and CI both check changed files, including repository-level workflow Markdown, alongside the application's full formatter check. Avoid ad hoc exclusions and per-file formatter overrides.
-- Keep lint and type-check commands consistent between local development, hooks, and CI.
+- Format every changed file before review. Run repository checks locally and record exact results; do not add GitHub Actions workflows. Avoid ad hoc exclusions and per-file formatter overrides.
+- Keep lint and type-check commands consistent between local development and any existing local hooks.
 
 ## Data access and query efficiency
 

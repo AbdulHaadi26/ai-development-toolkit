@@ -27,7 +27,7 @@ The `workflow-kit/` directory is the canonical product-neutral source. It contai
 2. Copy or compare only the portable templates listed above. Merge changes into existing records; never overwrite product history, backlog status, design decisions, or local commands wholesale.
 3. Replace placeholders, remove unused adapters, and verify every referenced path and command.
 4. Set `work-flow/WORKFLOW-KIT-VERSION` to the value in this source's `VERSION`. If the target uses another version, document the merged changes and the adopted version there.
-5. Run the target repository's formatting, lint, typecheck, test, build, and security checks. Review the complete diff with the target repository's required roles and merge through its normal PR process.
+5. Remove existing GitHub Actions workflow files and do not add new ones. Run the target repository's applicable formatting, lint, typecheck, test, build, and security checks locally. Review the complete feature through the one-time gates in `DEVELOPMENT-WORKFLOW.md`, then merge through the target repository's PR process.
 
 ### Track and update the toolkit as a Git submodule
 
@@ -65,7 +65,7 @@ This sets the local submodule branch to the `.gitmodules` value, then invokes `g
 }
 ```
 
-The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run the repository checks and reviews, then commit the pointer and any adaptations through a short-lived task branch and PR. Merge promptly after required gates pass so the adoption branch stays aligned with the trunk; never push the pointer directly to `main`. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
+The update command advances the submodule checkout to the latest commit on its configured branch. Review the submodule diff, copy or merge only relevant template changes into the adopting repository's tailored files, update `work-flow/WORKFLOW-KIT-VERSION` to the toolkit `VERSION` and exact submodule commit, run applicable local checks, and perform the one-time reviews for the adoption feature. Commit the pointer and any adaptations through one short-lived feature branch and PR. Merge promptly after required gates pass so the adoption branch stays aligned with the trunk; never push the pointer directly to `main`. The check never changes the working tree or pointer; neither command overwrites adapted workflow files, product history, or local standards.
 
 ## Updating multiple repositories
 

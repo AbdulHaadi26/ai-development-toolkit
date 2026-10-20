@@ -1,58 +1,48 @@
 # [PROJECT_NAME] — Shared Development Workflow
 
-This process is shared by every human and AI tool. The Markdown records in `work-flow/` are canonical; issues and tool-specific instructions are links/adapters and must not create competing scope or status.
+This process is shared by every human and AI tool. The Markdown records in `work-flow/` are canonical; issues and tool-specific instructions must not create competing scope or status.
 
 ## Source of truth
 
 - `FUTURE-SCOPES.md` owns feature story statuses and stable IDs.
-- `user-stories/` contains user outcomes, dependencies, non-goals, and testable acceptance criteria.
+- `user-stories/` contains user outcomes, dependencies, non-goals, acceptance criteria, and the one-time story and completed-feature review record.
 - `BUG-LOG.md` owns defect status and reproduction details.
-- `DEBUG-LOG.md` records each implementation change, changed paths, verification, role reviews, and rollback notes.
-- `AGENT-ROLES.md` defines ordered reviews. Read project `DESIGN.md`, `CODING-STANDARDS.md`, and `TEST-CASES.md` before implementation.
+- `DEBUG-LOG.md` records implementation changes, changed paths, verification, and links to the story's review record.
+- `AGENT-ROLES.md` defines responsibilities and review gates. Read project `DESIGN.md`, `CODING-STANDARDS.md`, and `TEST-CASES.md` before implementation.
 
 ## Statuses
 
-Use `Available`, `Picked`, `In progress`, `Review`, `Done`, `Blocked`, or `Deferred`. Stable IDs are never reused. The Manager checks dependencies before work starts. A dependency that is not complete must be explicitly accepted as a parallel prerequisite; do not silently bypass it. Mark Done only after all acceptance criteria, checks, role reviews, and user approval pass.
+Use `Available`, `Picked`, `In progress`, `Review`, `Done`, `Blocked`, or `Deferred`. Stable IDs are never reused. Before work starts, the Manager checks dependencies and the Manager and Lead Designer each review the story once. Mark Done only after acceptance criteria, local checks, completed-feature reviews, and user acceptance pass.
 
 ## Trunk-based development
 
-- `main` is the single long-lived integration trunk. Keep it buildable, tested, and safe to release after every merge. Do not create long-lived development, integration, or feature branches.
-- Work on short-lived branches cut from the latest `main`. Create one branch and one PR for each independently deliverable task, not one branch held open across an entire multi-task story. Use `feature/US-NNN-TNN-short-name` for a story task, `feature/US-NNN-short-name` for a single-task story, and `bug/BUG-YYYYMMDD-NNN-short-name` for a bug fix.
-- Keep each change small enough to review and integrate promptly; aim to merge a branch within one working day. If it will take longer, split it into safe, independently deliverable slices. Before requesting review, bring the branch up to date with `main`, resolve conflicts on the branch, and rerun the applicable checks. Delete the branch after merge.
-- Merge only through the required PR after CI, role reviews, and user acceptance pass. Direct commits and pushes to `main` are prohibited, including for maintainers and automation.
-- Deliver incomplete product work in safe slices. Keep every merged slice compatible with the current release; use an existing feature-flag mechanism when a feature must remain hidden until complete. Do not introduce a new flag system just to satisfy this process.
-- Parallel contributors use separate branches and worktrees, integrate their finished slices promptly, and never edit the same working tree concurrently.
+- `main` is the only long-lived integration trunk. Do not commit or push directly to it.
+- Create one short-lived branch from the latest `main` and one PR per story/feature. Implement the story's tasks on that branch so reviewers can assess the whole feature once. Use `feature/US-NNN-short-name`; use `bug/BUG-YYYYMMDD-NNN-short-name` for a bug fix.
+- Keep each feature small enough to review and integrate promptly; aim to merge within one working day. Before requesting review, bring the branch up to date with `main`, resolve conflicts, and run applicable local checks. Delete the branch after merge.
+- Do not add GitHub Actions workflows. Remove existing GitHub Actions workflows when adopting this process. Run checks locally and record exact commands and results in the PR and change log.
+- Keep every merged feature compatible with the current release. Parallel contributors use separate branches and do not edit the same working tree concurrently.
 
 ## Feature process
 
-1. Ask the Manager to check for duplicates, review the story, confirm dependencies, and assign an owner.
-2. Read the story and shared standards. Clarify scope and split large work into independently deliverable tasks.
-3. Obtain the Lead Designer and Lead Developer reviews required by `AGENT-ROLES.md`; agree on tests before implementation.
-4. For each independently deliverable task, create a short-lived branch from the latest `main`, named `feature/US-NNN-TNN-short-name`; for a single-task story, use `feature/US-NNN-short-name`. Do not carry a branch across multiple tasks. Use `bug/BUG-YYYYMMDD-NNN-short-name` for each bug. Never commit to or push directly to `main`. Do not have contributors edit the same working tree concurrently.
-5. Create a `DEBUG-LOG.md` change entry before implementation edits. Implement one task with tests; keep application code under `[APP_ROOT]` and product data under `[DATA_ROOT]` when these placeholders apply.
-6. Run `[TEST_COMMAND]`, `[LINT_COMMAND]`, `[TYPECHECK_COMMAND]`, and `[BUILD_COMMAND]`, plus applicable accessibility, security, SEO, and performance checks. Record exact commands/results.
-7. After implementation, complete separate Lead Designer, Lead Developer, and Lead QA reviews against the same PR head. Designer reviews the rendered feature against the approved design and accessibility needs; Developer reviews the complete diff against architecture, coding standards, reuse, configuration, and security; QA independently verifies the complete applicable suite and relevant accessibility, security, SEO, and performance checks with exact evidence. The implementer cannot be the sole approver. Every role completes its independent assessment even when another role has already found a blocker, so findings are consolidated for the author. Any blocker prevents approval and merge. After fixes, repeat every affected review against the new head.
-8. Have the Manager confirm all post-implementation specialist decisions, then show the deliverable and evidence to the user. Stop for user review before the next task.
-9. Open a pull request targeting `main` for every task or bug fix. Keep it draft while required implementation, post-implementation reviews, or user checkpoints remain. Merge each accepted task through its reviewed PR before branching from the new `main` for the next task. Update statuses and link the merged PR in story, bug, and change records.
+1. Check for duplicate stories, define scope, dependencies, acceptance criteria, owner, and priority.
+2. Before implementation, the Manager reviews the story for scope, priority, dependencies, and readiness exactly once. The Lead Designer reviews the story for design impact exactly once (record N/A with a reason when there is no design impact). Record both decisions in the story. Do not request these story reviews again for task breakdowns or implementation changes.
+3. Create one feature branch and one PR for the story. Add the change-log entry before editing. Implement all story tasks on this branch; update the story and log as work progresses.
+4. Run the repository's required test, lint, type, build, accessibility, security, and other quality checks locally once for the completed feature. Record exact commands, results, and limitations. Never claim an unrun check passed.
+5. When the complete feature is ready, the Lead Developer, Lead Designer, and Lead QA each review it once, independently and in parallel, against the same completed-feature PR head. Designer checks the rendered feature against approved design and accessibility needs; Developer checks the full diff against architecture, standards, reuse, configuration, and security; QA checks acceptance coverage, audits the recorded test results, and runs only additional targeted checks needed for independent confidence. Record each role's decision, reviewed head, findings, and evidence in the story. A role does not repeat its review after changes.
+6. Resolve blocking findings in one consolidated pass where possible, document how each was addressed, and run only the affected local checks. The author records resolution and evidence; do not request another role review. No blocking finding may remain open at acceptance.
+7. Present the completed feature, review record, and check evidence to the user. Merge the PR only after all one-time reviews, findings resolution, and user acceptance are recorded. Update story status and link the PR and change log.
 
-## PR review and comments
+## Review record and merge gate
 
-A PR review is an independent, evidence-based check of a specific head commit against story/bug acceptance criteria, dependencies, design and coding standards, tests, and quality requirements. Inspect the complete diff, reusable components/shared logic, centralized configuration, security/secrets, and regression coverage. For UI, inspect responsive rendering, accessibility, keyboard/focus, contrast, and motion or record why N/A. Run formatting, lint, typecheck, applicable full tests, build, and relevant accessibility/security/SEO/performance checks yourself; report exact commands and outcomes. Do not edit, commit to, or push changes onto the author's branch while reviewing. Put actionable findings on the PR and distinguish blockers from suggestions. If there are no findings, state that explicitly.
+Each story has two review moments: one combined story-intake handoff where the Manager and Lead Designer each review once; then one completed-feature handoff where Lead Developer, Lead Designer, and Lead QA review in parallel once. Run the complete required check suite once before feature review; QA may run targeted checks when needed. Record reviewer, date, decision, reviewed PR head where applicable, findings, and disposition. A review is never repeated. Changes after a review are handled by the author with affected local checks and a written disposition of findings.
 
-Merge gates: scope/acceptance and dependencies pass; design/accessibility pass or have a reasoned N/A; coding standards, reuse, and security pass; required tests/checks pass; conflicts and records are current; no blocking comments remain; and separate Designer, Developer, QA, Manager, and user review gates are recorded. Any failed or unevidenced applicable gate blocks approval and merge.
+Merge only when scope and acceptance criteria pass; all required reviews are recorded once; every blocking finding is resolved with evidence; applicable local checks pass; records and conflicts are current; and the user accepts the completed feature. User acceptance remains a separate gate.
 
-At the end of every review cycle, each role reports its result on the PR. Add clear comments for findings—preferably inline on the relevant changed lines—with impact and requested action. Reviewers must complete their assessment even when another role has already requested changes. Do not submit an approval while any blocking finding remains. Optional suggestions may be non-blocking. Leave a summary identifying each role, the exact reviewed head commit, decision, findings or explicit no-findings result, commands and outcomes, and limitations. A PR comment or approval does not by itself mark work Done, replace user acceptance, or authorize merging. If comment or approval access is unavailable, tell the repository owner and provide the prepared summary.
+## Bugs
 
-## Resolving conflicts
+1. Record a stable bug ID, severity, environment, reproduction steps, expected/actual behavior, and affected story in `BUG-LOG.md`; create a bug branch.
+2. If the bug cannot be reproduced, mark it Blocked with the missing evidence/action. Create a linked `DEBUG-LOG.md` entry before code edits and add a regression test.
+3. Fix the cause and run applicable local checks. For a UI bug, include its impact in the single completed-change Designer review; record N/A with a reason otherwise. Lead Developer and Lead QA each review the completed fix once. Record and resolve findings without repeating reviews.
+4. Open one PR for the fix. Ask the user to verify before marking Done; merge only after required reviews, finding resolution, local checks, and acceptance.
 
-Resolve on the PR feature/bug branch after inspecting current main, PR head, and both sides of each conflict. Preserve compatible intent; do not choose ours/theirs wholesale. Check scope, standards, reusable logic, tests, and record IDs; ask the owner if intent is ambiguous. Run diff checks and all applicable formatting/lint/typecheck/tests/build/accessibility/security/SEO checks, push only to the PR branch, then review the complete updated diff at its new head and update the PR summary. Approval applies to the reviewed commit.
-
-## Bug process
-
-1. Record a stable bug ID, severity, environment, reproduction steps, expected/actual behavior, and affected story in `BUG-LOG.md`; create a short-lived `bug/BUG-YYYYMMDD-NNN-short-name` branch from the latest `main`.
-2. Manager and QA triage it. Mark Blocked with the missing evidence/action if it cannot be reproduced.
-3. Before code edits, add a linked `DEBUG-LOG.md` entry. Add a regression test that fails before the fix.
-4. Developer fixes the cause. After implementation, Designer reviews UI impact or records N/A, a developer reviews the completed diff, and QA independently runs the regression and complete applicable suite. The implementer cannot be the sole approver.
-5. Open a pull request targeting `main`; direct commits and pushes to `main` are prohibited. Manager checks both logs and all applicable post-implementation role decisions. Ask the user to verify before marking Done and merge only after acceptance.
-
-For cross-tool coordination, every contributor reads the same files, claims work before editing, and records handoffs. Require PRs and passing checks for `main` in the host repository settings. Re-run integrated checks after merges.
+Do not add GitHub Actions workflows or require hosted CI checks. PR comments and approvals do not replace the review records, local evidence, or user acceptance. If a review is blocked by unavailable access, report the limitation and provide its prepared review summary without claiming it completed.
