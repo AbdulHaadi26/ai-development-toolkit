@@ -29,12 +29,19 @@ As a [user], I want [capability], so that [benefit].
 | ---- | ---------------------------------------- | ------------ | --------- |
 | 1    | [Small independently verifiable outcome] | None         | Available |
 
-## Manager and specialist review
+## One-time story review
 
-- **Manager:** Pending — scope, priority, dependency readiness
-- **Lead Designer:** Pending / N/A — design impact and rationale
-- **Lead Developer:** Pending — architecture and implementation approach
-- **Lead QA:** Pending — acceptance-to-test coverage
+- **Manager story review:** Pending — reviewer, date, decision, scope/priority/dependency notes
+- **Lead Designer story review:** Pending / N/A — reviewer, date, design impact and rationale
+
+## One-time completed-feature review
+
+Complete once after all story tasks are implemented, against the same PR head. Do not repeat reviews; record how findings were resolved.
+
+- **Lead Developer:** Pending — reviewer, date, reviewed PR head, decision, findings
+- **Lead Designer:** Pending / N/A — reviewer, date, reviewed PR head, decision, findings
+- **Lead QA:** Pending — reviewer, date, reviewed PR head, decision, exact check evidence
+- **Finding dispositions:** Pending — finding, author resolution, local verification
 
 ## Test plan and success measure
 

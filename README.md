@@ -12,6 +12,8 @@ At the start of each task in an adopting repository, run `npm run workflow:check
 
 The kit provides templates for story and bug workflows, review roles, coding standards, change tracking, repository instructions, pull-request checklists, and AI-tool adapters. Customize the templates for the target repository; keep that repository's own product requirements and history there.
 
+The shared process uses one branch and PR per feature, one Manager and Designer story review, and one completed-feature review each by Developer, Designer, and QA. Role reviews run once; authors resolve findings with targeted local checks. Do not add GitHub Actions workflows; remove existing workflows when adopting the kit.
+
 ## Maintain the toolkit
 
 Make portable process changes in `workflow-kit/`, review them through a pull request, and update `workflow-kit/VERSION` using the versioning guidance in the adoption guide. Run the repository's formatting check before requesting review. Do not add any adopting project's app implementation, catalog, or product-specific backlog to this repository.

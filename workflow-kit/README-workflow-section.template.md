@@ -2,7 +2,7 @@
 
 Use these prompts from top to bottom as needed. Read the shared project files before implementation. Replace bracketed details with repository-specific values.
 
-The repository follows trunk-based development: `main` is the only long-lived integration branch. Make each implementation task a small, short-lived branch from the latest `main`, aiming to merge it within one working day. Open a PR for that task, and merge only after the required checks, role reviews, and user acceptance pass. Never commit or push directly to `main`. For a multi-task story, merge one task before creating a fresh branch for the next task.
+The repository follows trunk-based development: `main` is the only long-lived integration branch. Use one short-lived branch and PR per story/feature, with all story tasks on that branch. The Manager and Lead Designer review the story once before implementation. When the whole feature is complete, the Lead Developer, Lead Designer, and Lead QA each review it once, in parallel against the same PR head. Do not repeat reviews after revisions; authors resolve findings and record targeted local verification. Do not add GitHub Actions workflows; run checks locally. Never commit or push directly to `main`.
 
 ### 1. Explain the project process
 
@@ -37,21 +37,19 @@ missing dependencies and status conflicts. Do not edit files or infer statuses.
 ### 4. Pick a story
 
 ```text
-Ask the Manager to review [US-NNN], confirm scope, acceptance criteria, dependencies, owner,
-and priority, then pass it through the ordered roles in work-flow/AGENT-ROLES.md. Do not
-implement while any required gate is pending or rejected.
+Have the Manager and Lead Designer review [US-NNN] once each, together, to confirm scope,
+acceptance criteria, dependencies, owner, priority, and design impact. Record both decisions in
+the story before implementation; do not repeat these reviews.
 ```
 
 ### 5. List and pick a task
 
 ```text
-List tasks for [US-NNN] with status, dependencies, deliverables, and review gates. After I
-select one, confirm prerequisites and ownership, create a short-lived branch from the latest
-main for that task (feature/US-NNN-TNN-short-name; use feature/US-NNN-short-name when the story has one task) and open a PR targeting main. Never commit or
-push directly to main. Do not keep one branch open across multiple tasks. Create a DEBUG-LOG
-entry, then implement only that task. After development, obtain separate Designer,
-Developer, and QA reviews of the completed feature, then stop for user review before the next
-task.
+List tasks for [US-NNN] with status, dependencies, and deliverables. After I select a story,
+create one short-lived branch and PR for the whole story. Implement its tasks on that branch,
+updating the change log as needed. Once the feature is complete, have Lead Developer, Lead
+Designer, and Lead QA review it once each in parallel against the same PR head. Resolve findings
+without repeat reviews, run targeted local checks, and stop for user acceptance before merge.
 ```
 
 ### 6. Add or update a feature
@@ -59,36 +57,30 @@ task.
 ```text
 Define [feature/change] as a story or update [US-NNN]. Check duplicates, scope, dependencies,
 acceptance criteria, design/data/security implications, and tests. Add new stories as Available
-for Manager review; do not implement until picked. When picked, make each independently
-deliverable task a short-lived feature/US-NNN-TNN-short-name branch from the latest main (use feature/US-NNN-short-name when the story has one task) and open
-a PR targeting main; never commit or push directly to main. Merge an accepted task before
-creating the next task branch. Split material scope growth into a linked story.
+for the one-time Manager and Lead Designer reviews; do not implement until both decisions are
+recorded and the story is picked. Use one branch and PR per story, with tasks on that branch.
+Do not add GitHub Actions workflows. Split material scope growth into a linked story.
 ```
 
 ### 7. List and fix bugs
 
 ```text
 List bugs by status/severity from work-flow/BUG-LOG.md. For [bug report], create a stable bug
-record and linked DEBUG-LOG entry, reproduce it, create bug/BUG-YYYYMMDD-NNN-short-name from
-the latest main, add a failing regression test, fix the cause, run full checks, complete all
-specialist reviews on the same PR head even if a blocker is found, obtain Manager review, open a
-PR targeting main, and stop for user verification before Done. Never
-commit or push directly to main.
+record and linked DEBUG-LOG entry, reproduce it, create a bug branch, add a regression test, fix
+the cause, and run applicable checks locally. Lead Developer and Lead QA each review the fix
+once; Lead Designer reviews once when there is design impact, otherwise record N/A. Resolve
+findings without repeat reviews. Open one PR and stop for user verification before Done.
 ```
 
 ### 8. Review a change
 
 ```text
-Review [US-NNN or BUG-ID] at the current PR head against its acceptance criteria,
-design/coding standards, tests, dependencies, and DEBUG-LOG entry. Treat review as read-only;
-do not edit or push to the author's branch. Have Designer, Developer, and QA each complete an
-independent review of the same exact PR head, even when an earlier role found a blocker. Run
-applicable full checks and report exact commands/results. Report findings on the PR, then have
-the Manager consolidate the decision. Request changes and do not approve while a blocker
-remains; formally approve only when all applicable gates are clean. Optional suggestions can
-be non-blocking. Always add a summary comment with the reviewed commit, each role's decision,
-findings or an explicit no-findings result, and exact check results/limitations. Do not mark
-Done or merge based only on the comment; wait for user acceptance.
+Use the applicable review slot once. For story intake, Manager and Lead Designer review the
+story together. For a completed feature, Lead Developer, Lead Designer, and Lead QA review the
+same PR head independently and in parallel. If the role already used that slot, do not repeat it.
+Record the decision, findings, reviewed commit, and exact local checks in the story. Resolve
+blockers and document author disposition and targeted verification. Do not mark Done or merge
+until findings are resolved and the user accepts the feature.
 ```
 
 ### 9. Resolve PR conflicts
@@ -97,7 +89,7 @@ Done or merge based only on the comment; wait for user acceptance.
 Resolve conflicts for [PR URL] on its existing feature/bug branch. Inspect current main, PR
 head, and both sides. Preserve both intended changes; never choose ours/theirs wholesale. Check
 scope, dependencies, design/coding standards, shared logic, tests, and change-log IDs; ask the
-owner if unclear. Run diff checks, formatting, lint, typecheck, applicable full tests, build,
-and relevant accessibility/security/SEO checks. Push only to the PR branch, review its complete
-diff at the new head, and post exact evidence on the PR.
+owner if unclear. Run diff checks and the affected local checks, then record the updated head
+and verification evidence in the story and PR. Do not repeat role reviews after conflict
+resolution.
 ```
